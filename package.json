@@ -1,0 +1,25 @@
+{
+  "name": "koa-api",
+  "version": "1.0.0",
+  "description": "Node Koa2 搭建通用 API服务",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makejun168/Koa-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/makejun168/Koa-API/issues"
+  },
+  "homepage": "https://github.com/makejun168/Koa-API#readme",
+  "dependencies": {
+    "dotenv": "^14.3.2",
+    "koa": "2.13.1",
+    "nodemon": "^2.0.15"
+  }
+}
