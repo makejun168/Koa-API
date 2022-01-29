@@ -1,7 +1,7 @@
 # Koa API
 Node Koa2 搭建通用 API服务
 
-### 1. 项目初始化
+## 1. 项目初始化
 
 #### npm 初始化
 
@@ -15,7 +15,9 @@ npm init -y
 git init
 ```
 
-### 2. 搭建项目
+---
+
+## 2. 搭建项目
 
 #### 安装 Koa
 
@@ -51,9 +53,9 @@ app.listen(3000, () => {
 node src/main.js
 ```
 
+---
 
-
-### 3. 项目的基础搭建
+## 3. 项目的基础搭建
 
 #### 3.1 自动重启服务
 
@@ -113,4 +115,132 @@ app.use((ctx, next) => {
 app.listen(APP_PORT, () => {
     console.log(`server is running on http://localhost:${APP_PORT}`)
 })
+```
+
+---
+
+## 4. 添加路由
+
+### 步骤
+
+1. 导入包
+2. 实例化对象
+3. 编写路由
+4. 注册中间件
+
+#### 导入
+
+```js
+yarn add koa-router
+```
+
+
+#### 编写路由
+
+```js
+const Router = require("koa-router");
+
+const router = new Router({prefix: '/users'});
+
+// router get /users
+router.get('/', (ctx, next) => {
+    ctx.body = 'user'
+})
+
+module.exports = router;
+```
+
+#### 改写入口文件 main.js
+
+```js
+const Koa = require('koa');
+const { APP_PORT } = require('./config/config.default');
+
+const app = new Koa();
+
+const Router = require('koa-router');
+const UserRouter = require('./router/user.route');
+
+app.use(UserRouter.routes());
+
+app.use((ctx, next) => {
+    ctx.body = 'Hello world  123';
+})
+
+app.listen(APP_PORT, () => {
+    console.log(`server is running on http://localhost:${APP_PORT}`);
+})
+```
+
+---
+
+## 5. 目录结构优化
+
+#### 将 HTTP 服务 和 app 业务拆分
+
+```
+创建 src/app/index.js
+```
+
+```js
+const Koa = require('koa');
+
+const UserRouter = require('../router/user.route');
+
+const app = new Koa();
+
+app.use(UserRouter.routes());
+
+module.exports = app;
+```
+
+#### 修改 main.js
+
+```js
+const Koa = require('koa');
+const { APP_PORT } = require('./config/config.default');
+const app = require('./app');
+
+app.listen(APP_PORT, () => {
+    console.log(`server is running on http://localhost:${APP_PORT}`)
+})
+```
+
+#### 将路由和控制器进行拆分
+
+路由解析 URL，分发到控制器对应的方法
+控制前：处理不同的业务需求
+
+```js
+const Router = require("koa-router");
+
+const router = new Router({prefix: '/users'});
+const {register, login} = require('../controller/user.controller');
+
+// router get /users
+router.get('/', (ctx, next) => {
+    ctx.body = '用户页面'
+});
+
+router.post('/register', register);
+
+router.post('/login', login);
+
+module.exports = router;
+```
+
+##### 改写 user.controller.js
+
+```js
+class UserController {
+    async register(ctx, next) {
+        ctx.body = '用户注册成功'
+    }
+
+    async login(ctx, next) {
+        ctx.body = '用户登录成功'
+    }
+}
+
+module.exports = new UserController();
 ```
