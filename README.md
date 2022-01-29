@@ -244,3 +244,51 @@ class UserController {
 
 module.exports = new UserController();
 ```
+
+---
+
+## 6 解析 body 拆分 service 层
+
+```
+yarn add koa-body
+```
+
+#### 注册中间件
+
+#### 解析请求的数据
+
+```js
+const { createUser } = require('../service/user.service')
+
+class UserController {
+    async register(ctx, next) {
+        // 获取数据
+        console.log(ctx.request.body);
+        // 操作数据库
+
+        // 返回结果
+        ctx.body = ctx.request.body;
+    }
+
+    async login(ctx, next) {
+        ctx.body = '用户登录成功'
+    }
+}
+
+module.exports = new UserController();
+```
+
+
+#### 拆分 Service 层 从 controller 中
+
+```js
+// 操作用户数据库
+class UserService {
+    async createUser(user_name, password) {
+        // todo
+        return '写入数据库成功'
+    }
+}
+
+module.exports = new UserService();
+```
