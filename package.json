@@ -21,7 +21,9 @@
     "dotenv": "^14.3.2",
     "koa": "2.13.1",
     "koa-body": "^4.2.0",
-    "koa-router": "^10.1.1"
+    "koa-router": "^10.1.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.14.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
